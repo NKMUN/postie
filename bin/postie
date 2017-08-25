@@ -1,0 +1,47 @@
+#!/usr/bin/env node
+
+const program = require('commander')
+
+program
+    .version('0.1.0')
+    .option('-p, --port <port>',  'Port to bind [8003]', parseInt)
+    .option('-h, --host <addr>',  'Host address to bind [127.0.0.1]', String)
+    .option('--db, <connStr>',    'Database, [mongodb://localhost:27017/postie]', String)
+    .option('--smtp-port <port>', 'SMTP port [465]', parseInt)
+    .option('--smtp-host <host>', 'SMTP host <required>', String)
+    .option('--account <user>',   'SMTP account <required>', String)
+    .option('--password <pswd>',  'SMTP account password <required>', String)
+    .option('--nickname <nick>',  'SMTP account nickname', String)
+    .parse(process.argv)
+
+let {
+    port = 8003,
+    host = 'localhost',
+    db = 'mongodb://localhost:27017/postie',
+    smtpPort = 465,
+    smtpHost,
+    account,
+    password,
+    nickname
+} = program
+
+if (!smtpHost || !account || !password) {
+    console.error('Bad usage, check "postie --help"\n')
+    process.exit(1)
+} else {
+    require('../server').create({
+        port,
+        host,
+        db,
+        smtpPort,
+        smtpHost,
+        account,
+        password,
+        nickname
+    })
+    .catch(e => {
+        console.error(e.message)
+        console.error(e.stack)
+        process.exit(-1)
+    })
+}

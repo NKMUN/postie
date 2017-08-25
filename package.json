@@ -1,0 +1,19 @@
+{
+  "name": "postie",
+  "version": "0.1.0",
+  "description": "Mail delivery service",
+  "main": "bin/postie",
+  "repository": "ssh://git@github.com/NKMUN/postie",
+  "author": "wacky6.AriesMBP <416707889@qq.com>",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "commander": "^2.11.0",
+    "koa": "^2.3.0",
+    "koa-accesslog": "^0.0.2",
+    "koa-body": "^2.3.0",
+    "koa-mongo-sanitize": "wacky6/koa-mongo-sanitize",
+    "koa-router": "^7.2.1",
+    "mongoclient": "^1.0.3",
+    "nodemailer": "^4.0.1"
+  }
+}
