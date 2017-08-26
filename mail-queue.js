@@ -1,9 +1,24 @@
+const Hmac = require('./lib/hmac')
+
+const insertTracer = (html, url, id, hmac) => {
+    if (!url.endsWith('/'))
+        url = url + '/'
+    const publicUrl = `${url}${id}/t.gif`
+    const sigPayload = publicUrl.slice(publicUrl.indexOf('//') + 2)
+    const tracerUrl = hmac ? `${publicUrl}?sig=${hmac(sigPayload)}` : publicUrl
+    return `${html}
+<img style="display: none" src="${tracerUrl}" width="1" height="1" />
+`
+}
+
 async function executor({
     db,
     mailer,
     account,
     dsnMail,
-    shutdown
+    shutdown,
+    tracer,
+    secret
 }, {
     retry: maxRetry
 }) {
@@ -33,8 +48,10 @@ async function executor({
                 from: { name: mail.nickname, address: mail.from },
                 to: mail.to,
                 subject: mail.subject,
-                html: mail.html,
-                messageId: mail._id + (+new Date())
+                html: tracer
+                    ? insertTracer(mail.html, tracer, mail._id, secret ? Hmac('sha256', secret) : null)
+                    : mail.html,
+                messageId: `${mail._id}_${+new Date()}`
             },
             dsnMail && {
                 id: mail._id,
