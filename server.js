@@ -16,7 +16,9 @@ module.exports = {
         account,
         password,
         nickname,
-        dsnMail
+        dsnMail,
+        tracer,
+        secret
     }) {
         const app = new Koa()
         app.on('error', err => console.error(err.stack))
@@ -24,6 +26,8 @@ module.exports = {
         app.context.db = await require('mongodb').MongoClient.connect(db)
         app.context.account = account
         app.context.dsnMail = dsnMail
+        app.context.tracer = tracer
+        app.context.secret = secret
         app.context.mailer = createMailer({
             port: smtpPort,
             host: smtpHost,
@@ -39,6 +43,8 @@ module.exports = {
         app.use( MongoSanitize() )
         app.use( require('./routes/mail').routes )
         app.use( require('./routes/test').routes )
+        if (tracer)
+            app.use( require('./routes/tracer').routes )
 
         let queue = createMailQueue(app.context)
 
