@@ -2,6 +2,7 @@ async function executor({
     db,
     mailer,
     account,
+    dsnMail,
     shutdown
 }, {
     retry: maxRetry
@@ -26,13 +27,22 @@ async function executor({
             } }
         )
 
-        let error = await mailer.sendMail({
-            from: { name: mail.nickname, address: mail.from },
-            to: mail.to,
-            subject: mail.subject,
-            html: mail.html
-        })
-        .then(info => {
+        // TODO: wait for object spread
+        let error = await mailer.sendMail(Object.assign(
+            {
+                from: { name: mail.nickname, address: mail.from },
+                to: mail.to,
+                subject: mail.subject,
+                html: mail.html
+            },
+            dsnMail && {
+                id: mail._id,
+                return: 'headers',
+                notify: ['failure', 'delay'],
+                recipient: dsnMail
+            }
+        )).then(info => {
+            console.log(info)
             if (parseInt(info.response, 10) === 250)
                 return null
             else

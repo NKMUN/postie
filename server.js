@@ -15,13 +15,15 @@ module.exports = {
         smtpHost,
         account,
         password,
-        nickname
+        nickname,
+        dsnMail
     }) {
         const app = new Koa()
         app.on('error', err => console.error(err.stack))
         app.proxy = true
         app.context.db = await require('mongodb').MongoClient.connect(db)
         app.context.account = account
+        app.context.dsnMail = dsnMail
         app.context.mailer = createMailer({
             port: smtpPort,
             host: smtpHost,

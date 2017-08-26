@@ -12,6 +12,7 @@ program
     .option('--account <user>',   'SMTP account <required>', String)
     .option('--password <pswd>',  'SMTP account password <required>', String)
     .option('--nickname <nick>',  'SMTP account nickname', String)
+    .option('--dsn-mail <addr>',  'SMTP DSN mail address', String)
     .parse(process.argv)
 
 let {
@@ -22,7 +23,8 @@ let {
     smtpHost,
     account,
     password,
-    nickname
+    nickname,
+    dsnMail
 } = program
 
 if (!smtpHost || !account || !password) {
@@ -37,7 +39,8 @@ if (!smtpHost || !account || !password) {
         smtpHost,
         account,
         password,
-        nickname
+        nickname,
+        dsnMail
     })
     .catch(e => {
         console.error(e.message)
