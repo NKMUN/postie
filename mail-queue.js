@@ -79,7 +79,8 @@ async function executor({
                 { _id: mail._id },
                 { $set: {
                     delivered: new Date(),
-                    state: 'delivered'
+                    state: 'delivered',
+                    traceable: Boolean(tracer)
                 } }
             )
         }
