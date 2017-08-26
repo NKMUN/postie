@@ -33,7 +33,8 @@ async function executor({
                 from: { name: mail.nickname, address: mail.from },
                 to: mail.to,
                 subject: mail.subject,
-                html: mail.html
+                html: mail.html,
+                messageId: mail._id + (+new Date())
             },
             dsnMail && {
                 id: mail._id,
