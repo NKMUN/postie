@@ -11,11 +11,7 @@ route.get('/tracers/:id/*', async ctx => {
     const { secret } = ctx
 
     // verify signature
-    const publicUrl = ctx.request.href.slice(
-        ctx.request.href.indexOf('//') + 2,
-        ctx.request.href.indexOf('?')
-    )
-    if (!secret || Hmac('sha256', secret)(publicUrl) === sig) {
+    if (!secret || Hmac('sha256', secret)(id) === sig) {
         await ctx.db.collection('mail').update(
             { _id: id, state: 'delivered' },
             { $push: {

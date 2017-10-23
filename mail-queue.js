@@ -4,8 +4,7 @@ const insertTracer = (html, url, id, hmac) => {
     if (!url.endsWith('/'))
         url = url + '/'
     const publicUrl = `${url}${id}/t.gif`
-    const sigPayload = publicUrl.slice(publicUrl.indexOf('//') + 2)
-    const tracerUrl = hmac ? `${publicUrl}?sig=${hmac(sigPayload)}` : publicUrl
+    const tracerUrl = hmac ? `${publicUrl}?sig=${hmac(id)}` : publicUrl
     return `<div>${html}<img style="display: none" src="${tracerUrl}" width="1" height="1" /></div>`
 }
 
