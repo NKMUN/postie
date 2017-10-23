@@ -6,9 +6,7 @@ const insertTracer = (html, url, id, hmac) => {
     const publicUrl = `${url}${id}/t.gif`
     const sigPayload = publicUrl.slice(publicUrl.indexOf('//') + 2)
     const tracerUrl = hmac ? `${publicUrl}?sig=${hmac(sigPayload)}` : publicUrl
-    return `${html}
-<img style="display: none" src="${tracerUrl}" width="1" height="1" />
-`
+    return `<div>${html}<img style="display: none" src="${tracerUrl}" width="1" height="1" /></div>`
 }
 
 async function executor({
