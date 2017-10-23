@@ -58,7 +58,7 @@ async function executor({
                 { $inc: { retry: 1, priority: 1 },
                   $push: { errors: error },
                   $set: { state: mail.retry >= maxRetry - 1 ? 'failed' : 'queued' }
-                },
+                }
             )
         } else {
             await db.collection('mail').updateOne(
