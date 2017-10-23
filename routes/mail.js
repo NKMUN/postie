@@ -5,12 +5,11 @@ const newId = () => ObjectId().toHexString()
 
 const queue = async ctx => {
     const {
-        from,
         to,
         subject,
         nickname,
         html
-    } = ctx.body
+    } = ctx.request.body
 
     const {
         db,
@@ -22,8 +21,8 @@ const queue = async ctx => {
     } = await db.collection('mail').insertOne({
         _id: newId(),
         mailer: account,
-        from: from,
-        nickname: nickname || from,
+        from: account,
+        nickname: nickname || account,
         to,
         subject,
         html,

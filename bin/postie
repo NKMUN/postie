@@ -13,6 +13,8 @@ program
     .option('--password <pswd>',  'SMTP account password <required>', String)
     .option('--nickname <nick>',  'SMTP account nickname', String)
     .option('--dsn-mail <addr>',  'SMTP DSN mail address', String)
+    .option('--tracer <url>',     'Tracer public url, reverse proxy to /tracers/', String)
+    .option('--secret <str>',     'Secret used to sign and verify tracers', String)
     .parse(process.argv)
 
 let {
@@ -24,7 +26,9 @@ let {
     account,
     password,
     nickname,
-    dsnMail
+    dsnMail,
+    tracer,
+    secret
 } = program
 
 if (!smtpHost || !account || !password) {
@@ -40,7 +44,9 @@ if (!smtpHost || !account || !password) {
         account,
         password,
         nickname,
-        dsnMail
+        dsnMail,
+        tracer,
+        secret
     })
     .catch(e => {
         console.error(e.message)
