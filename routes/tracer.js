@@ -18,9 +18,13 @@ route.get('/tracers/:id/*', async ctx => {
     if (!secret || Hmac('sha256', secret)(publicUrl) === sig) {
         await ctx.db.collection('mail').update(
             { _id: id, state: 'delivered' },
-            { $set: {
-                state: 'opened',
-                first_open_at: new Date()
+            { $push: {
+                viewed_by: {
+                    user_agent: ctx.headers['user-agent'],
+                    requested_via: ctx.href,
+                    ips: ctx.ips,
+                    at: new Date()
+                }
             } }
         )
     } else {
