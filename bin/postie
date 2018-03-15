@@ -11,6 +11,7 @@ program
     .option('--smtp-host <host>', 'SMTP host <required>', String)
     .option('--account <user>',   'SMTP account <required>', String)
     .option('--password <pswd>',  'SMTP account password <required>', String)
+    .option('--mailfrom <addr>',  'SMTP mail from <optional>', String)
     .option('--nickname <nick>',  'SMTP account nickname', String)
     .option('--dsn-mail <addr>',  'SMTP DSN mail address', String)
     .option('--tracer <url>',     'Tracer public url, reverse proxy to /tracers/', String)
@@ -25,6 +26,7 @@ let {
     smtpHost,
     account,
     password,
+    mailfrom,
     nickname,
     dsnMail,
     tracer,
@@ -43,6 +45,7 @@ if (!smtpHost || !account || !password) {
         smtpHost,
         account,
         password,
+        mailfrom: mailfrom || account,
         nickname,
         dsnMail,
         tracer,

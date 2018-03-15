@@ -15,6 +15,7 @@ module.exports = {
         smtpHost,
         account,
         password,
+        mailfrom,
         nickname,
         dsnMail,
         tracer,
@@ -25,6 +26,7 @@ module.exports = {
         app.proxy = true
         app.context.db = await require('mongodb').MongoClient.connect(db)
         app.context.account = account
+        app.context.mailfrom = mailfrom
         app.context.dsnMail = dsnMail
         app.context.tracer = tracer
         app.context.secret = secret

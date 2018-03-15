@@ -6,8 +6,12 @@
   "repository": "ssh://git@github.com/NKMUN/postie",
   "author": "wacky6.AriesMBP <416707889@qq.com>",
   "license": "GPL-3.0",
+  "scripts": {
+    "lint": "eslint bin/* lib/* routes/* *.js"
+  },
   "dependencies": {
     "commander": "^2.11.0",
+    "email-validator": "^1.1.1",
     "koa": "^2.3.0",
     "koa-accesslog": "^0.0.2",
     "koa-body": "^2.3.0",
@@ -15,5 +19,8 @@
     "koa-router": "^7.2.1",
     "mongoclient": "^1.0.3",
     "nodemailer": "^4.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.18.2"
   }
 }
