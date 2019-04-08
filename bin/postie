@@ -2,11 +2,17 @@
 
 const program = require('commander')
 
+const {
+    DEFAULT_PORT = '8003',
+    DEFAULT_HOST = 'localhost',
+    DEFAULT_MONGO = 'mongodb://localhost/postie'
+} = process.env
+
 program
     .version('0.1.0')
-    .option('-p, --port <port>',  'Port to bind [8003]', parseInt)
-    .option('-h, --host <addr>',  'Host address to bind [127.0.0.1]', String)
-    .option('--db, <connStr>',    'Database, [mongodb://localhost:27017/postie]', String)
+    .option('-p, --port <port>',  `Port to bind [${DEFAULT_PORT}]`, parseInt)
+    .option('-h, --host <addr>',  `Host address to bind [${DEFAULT_HOST}]`, String)
+    .option('--db, <connStr>',    `Database, [${DEFAULT_MONGO}]`, String)
     .option('--smtp-port <port>', 'SMTP port [465]', parseInt)
     .option('--smtp-host <host>', 'SMTP host <required>', String)
     .option('--account <user>',   'SMTP account <required>', String)
@@ -19,9 +25,9 @@ program
     .parse(process.argv)
 
 let {
-    port = 8003,
-    host = 'localhost',
-    db = 'mongodb://localhost:27017/postie',
+    port = parseInt(DEFAULT_PORT, 10),
+    host = DEFAULT_HOST,
+    db = DEFAULT_MONGO,
     smtpPort = 465,
     smtpHost,
     account,
@@ -51,9 +57,17 @@ if (!smtpHost || !account || !password) {
         tracer,
         secret
     })
-    .catch(e => {
-        console.error(e.message)
-        console.error(e.stack)
-        process.exit(-1)
-    })
+    .then(
+        server => {
+            process.on('SIGTERM', _ => {
+                console.error('SIGTERM received, stopping')
+                server.shutdown()
+            })
+        },
+        err => {
+            console.error(err.message)
+            console.error(err.stack)
+            process.exit(-1)
+        }
+    )
 }

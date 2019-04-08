@@ -13,7 +13,6 @@
     "commander": "^2.11.0",
     "email-validator": "^1.1.1",
     "koa": "^2.3.0",
-    "koa-accesslog": "^0.0.2",
     "koa-body": "^2.3.0",
     "koa-mongo-sanitize": "wacky6/koa-mongo-sanitize",
     "koa-router": "^7.2.1",

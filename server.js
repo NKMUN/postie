@@ -1,6 +1,5 @@
 const Koa = require('koa')
 const KoaBody = require('koa-body')
-const AccessLog = require('koa-accesslog')
 const MongoSanitize = require('koa-mongo-sanitize')
 const {createServer} = require('http')
 const createMailer = require('./lib/create-mailer')
@@ -40,7 +39,6 @@ module.exports = {
         // ensure index is created to speed up lookup
         await app.context.db.collection('mail').createIndex({mailer: 1, state: 1, priority: 1, created: 1})
 
-        app.use( AccessLog() )
         app.use( KoaBody() )
         app.use( MongoSanitize() )
         app.use( require('./routes/mail').routes )
@@ -60,7 +58,7 @@ module.exports = {
         })
 
         // graceful shutdown
-        app.context.shutdown = () => {
+        server.shutdown = app.context.shutdown = () => {
             queue.stop()
             server.close()
             app.context.db.close()
